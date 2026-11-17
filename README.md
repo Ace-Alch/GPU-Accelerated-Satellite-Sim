@@ -1,5 +1,5 @@
 <div align="center">
-<img src="portfolio-assets/cover.svg" width="100%" alt="GPU-Accelerated Satellite Simulation project cover">
+<img src="https://raw.githubusercontent.com/Ace-Alch/Ace-Alch.github.io/main/banners/GPU-Accelerated-Satellite-Sim.webp" width="100%" alt="GPU-Accelerated-Satellite-Sim — project concept artwork">
 
 # GPU-Accelerated Satellite Simulation
 
