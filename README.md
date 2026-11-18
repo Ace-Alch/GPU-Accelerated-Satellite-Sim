@@ -1,93 +1,27 @@
-<div align="center">
-<img src="https://raw.githubusercontent.com/Ace-Alch/Ace-Alch.github.io/main/banners/GPU-Accelerated-Satellite-Sim.webp" width="100%" alt="GPU-Accelerated-Satellite-Sim — project concept artwork">
+# Parallel Satellite Simulation
 
-# GPU-Accelerated Satellite Simulation
+**One orbital workload, three implementations.** This Tampere University project follows a C reference implementation through CPU threading and OpenCL compute.
 
-**Compare serial, OpenMP and OpenMP plus OpenCL implementations of a gravitational simulation.**
+[Replay the CPU reference run](https://ace-alch.github.io/apps/exhibits/satellite/) · [OpenMP report](results/Part1-OpenMP.pdf) · [OpenCL report](results/Part2-OpenCL.pdf)
 
-C · OpenMP · OpenCL · SDL2 · CMake
+![Recording of the original SDL2 satellite simulation](images/Demo.gif)
 
-[Overview](#overview) · [Design](portfolio/DESIGN.md) · [Setup](portfolio/SETUP.md) · [Validation](portfolio/VALIDATION.md) · [Evidence](portfolio/EVIDENCE.md)
-</div>
+*Original desktop demonstration. In the SDL2 app, the mouse moves the gravity center.*
 
-<!-- project-navigation:start -->
-<p align="center">
-  <a href="https://ace-alch.github.io/work/GPU-Accelerated-Satellite-Sim/"><img alt="View project" src="https://img.shields.io/badge/View%20project-38bdf8?style=for-the-badge&logo=githubpages&logoColor=white"></a>
-  <a href="portfolio/DESIGN.md"><img alt="Explore design" src="https://img.shields.io/badge/Explore%20design-30363d?style=for-the-badge&logo=readthedocs&logoColor=white"></a>
-  <a href="portfolio/SETUP.md"><img alt="Setup guide" src="https://img.shields.io/badge/Setup%20guide-30363d?style=for-the-badge&logo=github&logoColor=white"></a>
-  <a href="portfolio/EVIDENCE.md"><img alt="Check evidence" src="https://img.shields.io/badge/Check%20evidence-30363d?style=for-the-badge&logo=readthedocs&logoColor=white"></a>
-</p>
-<p align="center"><strong>Team course project</strong> &nbsp; / &nbsp; Engineering &nbsp; / &nbsp; <a href="https://ace-alch.github.io/">Mehdi's portfolio</a></p>
-<!-- project-navigation:end -->
+## Trace the compute path
 
+1. **[C reference](src/cpu/parallel.c)** — The reference solver updates satellite positions and velocities under central gravity. SDL2 displays the frame.
+2. **[OpenMP implementation](src/openmp/parallel.c)** — Inspect the CPU parallel loops and compare them with the reference implementation.
+3. **[OpenCL host](src/opencl/parallel.c) and [kernels](src/opencl/parallel.cl)** — Follow the device setup, work dispatch, and kernels.
 
-## Overview
+The workloads include both motion updates and per-pixel rendering. Use the two reports above for their original performance measurements and test conditions.
 
-| Item | Record |
-| :-- | :-- |
-| Project type | Team course project |
-| Field | Engineering |
-| Material in this package | Existing repository inspected |
-| Documentation review | 17 November 2026 |
+## Browser replay
 
-## Scope
+The replay contains **181 frames of 64 satellites** from a native run of the sequential C reference solver with a fixed seed. The browser draws recorded coordinates with trails. This run checks the reference trajectory. It does not measure GPU performance.
 
-Compare serial, OpenMP and OpenMP plus OpenCL implementations of a gravitational simulation. The documentation separates the stated project scope, inspected artifacts and future work. A listed feature is not a new test result.
+## Build on your machine
 
-### Main elements
+Start with the [setup notes](portfolio/SETUP.md) and the CMake files for [reference](src/cpu/CMakeLists.txt), [OpenMP](src/openmp/CMakeLists.txt), or [OpenCL](src/opencl/CMakeLists.txt). The desktop build uses SDL2. The OpenCL variant also needs an OpenCL development environment and a compatible device runtime.
 
-- Satellite state
-- Physics update
-- Pixel computation
-- SDL2 display
-
-## Explore the project
-
-| Design | Setup | Validation | Evidence |
-| :-- | :-- | :-- | :-- |
-| [System and boundaries](portfolio/DESIGN.md) | [Available entry points](portfolio/SETUP.md) | [Test plan](portfolio/VALIDATION.md) | [Verified material](portfolio/EVIDENCE.md) |
-
-## Technical limits
-
-The inspected CPU source calculates gravity from one black-hole center. It does not sum gravity between every satellite pair. The physics work scales with satellite count and the graphics work includes pixel-by-satellite loops. The previous generic all-pairs O(N²) description does not describe this source. No speedup value is asserted here without its run conditions.
-
-## Project preview
-
-![Project artifact](images/Demo.gif)
-
-This image is an existing repository artifact. It is not evidence of a new test.
-
-<details>
-<summary><strong>Browse source files and project artifacts</strong></summary>
-
-| Path | Type |
-| :-- | :-- |
-| [LICENSE](https://github.com/Ace-Alch/GPU-Accelerated-Satellite-Sim/blob/main/LICENSE) | file |
-| [README.md](https://github.com/Ace-Alch/GPU-Accelerated-Satellite-Sim/blob/main/README.md) | .md |
-| [images/Demo.gif](https://github.com/Ace-Alch/GPU-Accelerated-Satellite-Sim/blob/main/images/Demo.gif) | .gif |
-| [images/Optimizer.png](https://github.com/Ace-Alch/GPU-Accelerated-Satellite-Sim/blob/main/images/Optimizer.png) | .png |
-| [results/Part1-OpenMP.pdf](https://github.com/Ace-Alch/GPU-Accelerated-Satellite-Sim/blob/main/results/Part1-OpenMP.pdf) | .pdf |
-| [results/Part2-OpenCL.pdf](https://github.com/Ace-Alch/GPU-Accelerated-Satellite-Sim/blob/main/results/Part2-OpenCL.pdf) | .pdf |
-| [src/SDL2/SDL2-devel-2.32.10-VC.zip](https://github.com/Ace-Alch/GPU-Accelerated-Satellite-Sim/blob/main/src/SDL2/SDL2-devel-2.32.10-VC.zip) | .zip |
-| [src/VS-CMakeSetting/CMakeSettings.json](https://github.com/Ace-Alch/GPU-Accelerated-Satellite-Sim/blob/main/src/VS-CMakeSetting/CMakeSettings.json) | .json |
-| [src/cpu/CMakeLists.txt](https://github.com/Ace-Alch/GPU-Accelerated-Satellite-Sim/blob/main/src/cpu/CMakeLists.txt) | .txt |
-| [src/cpu/parallel.c](https://github.com/Ace-Alch/GPU-Accelerated-Satellite-Sim/blob/main/src/cpu/parallel.c) | .c |
-| [src/opencl/CMakeLists.txt](https://github.com/Ace-Alch/GPU-Accelerated-Satellite-Sim/blob/main/src/opencl/CMakeLists.txt) | .txt |
-| [src/opencl/parallel.c](https://github.com/Ace-Alch/GPU-Accelerated-Satellite-Sim/blob/main/src/opencl/parallel.c) | .c |
-
-See the [complete source inventory](portfolio/SOURCE-INVENTORY.md) for all inspected file paths.
-
-</details>
-
-## Next work
-
-- [ ] Raw benchmark timings
-- [ ] Exact build and hardware settings
-- [ ] Per-author contribution
-- [ ] Repeatable speedup calculation
-
-## Credits and reuse
-
-This is a team project. The exact division of work must be recorded before individual authorship is claimed.
-
-Existing license terms remain in effect. This package does not grant a new license over source code, course material, models or datasets. See [reuse and contribution notes](portfolio/CONTRIBUTIONS.md).
+**Authors:** Mehdi Moallemkolaei and Md Ashfak Haider Nehal. See the [license and source attribution](LICENSE).
